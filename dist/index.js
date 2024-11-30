@@ -61,7 +61,15 @@ class SteamSearchExtension {
           const filteredSteamApps = steamApps?.filter((app) => app.name.toLowerCase().includes(searchTerm));
           console.log("Found Steam:", filteredSteamApps);
           if ((filteredSteamApps ?? []).length > 0) {
-            resolve(filteredSteamApps);
+            resolve(filteredSteamApps?.map((app) => ({
+              id: `steam-${app.appid}`,
+              title: app.name,
+              subtitle: `App ID: ${app.appid}`,
+              action: {
+                type: "Simple",
+                command: `steam.view.${app.appid}`
+              }
+            })) ?? []);
           } else {
             resolve([]);
           }
