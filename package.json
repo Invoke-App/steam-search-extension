@@ -1,0 +1,41 @@
+{
+  "name": "steamextension",
+  "publisher": "invoke-community",
+  "description": "Steam search extension",
+  "version": "1.0.0",
+  "engines": {
+      "invoke": ">=0.1.0"
+  },
+  "main": "dist/index.js",
+  "capabilities": ["Search"],
+  "permissions": ["search"],
+  "activationEvents": ["onSearch"],
+  "contributes": {
+      "commands": [
+          {
+              "command": "steam.search",
+              "title": "Search Steam"
+          },
+          {
+              "command": "steam.view",
+              "title": "View Steam Details"
+          }
+      ],
+      "configuration": {
+          "properties": {
+              "steam.debounceTime": {
+                  "type": "number",
+                  "default": 300,
+                  "description": "Time to wait before sending search request (in ms)"
+              }
+          }
+      }
+  },
+  "scripts": {
+      "build": "bun build ./src/index.ts --outdir ./dist"
+  },
+  "devDependencies": {
+      "typescript": "^5.0.0"
+  },
+  "type": "module"
+}
