@@ -7,14 +7,20 @@ export default class SteamSearchExtension implements ExtensionInterface {
     private searchTimeout: any | null = null;
     private lastQuery = '';
 
-    // Make a request to the SteamAPI to get SteamApps from 'https://api.steampowered.com/ISteamApps/GetAppList/v0002/' and cache the result
+
     private steamApps: {appid: number, name: string}[] = [];
 
+    // Make a request to the SteamAPI to get SteamApps from 'https://api.steampowered.com/ISteamApps/GetAppList/v0002/' and cache the result
     async getSteamApps(useCache: boolean = true) {
         if (useCache && this.steamApps.length > 0) {
             return this.steamApps;
         }
-        const response = await fetch('https://api.steampowered.com/ISteamApps/GetAppList/v0002/');
+        // Fetch mimicking a browser request
+        const response = await fetch('https://api.steampowered.com/ISteamApps/GetAppList/v0002/', {
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36',
+            }
+        });
         const data = await response.json();
         this.steamApps = data.applist.apps;
     }
